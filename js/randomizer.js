@@ -34,8 +34,21 @@ export function parseLines(text) {
     .filter(Boolean);
 }
 
-export function buildGroups(names, mode, value) {
-  if (!names.length) {
+export function findDuplicateEntries(items) {
+  const seen = new Map();
+  const duplicates = new Set();
+
+  for (const item of items) {
+    const key = item.toLocaleLowerCase();
+    if (seen.has(key)) duplicates.add(seen.get(key));
+    else seen.set(key, item);
+  }
+
+  return [...duplicates];
+}
+
+export function getGroupCount(nameCount, mode, value) {
+  if (!Number.isInteger(nameCount) || nameCount < 1) {
     throw new Error('Add at least one name.');
   }
 
@@ -43,15 +56,23 @@ export function buildGroups(names, mode, value) {
     throw new Error('Group setting must be a whole number greater than 0.');
   }
 
-  const shuffledNames = shuffle(names);
-  const groupCount = mode === 'size'
-    ? Math.ceil(shuffledNames.length / value)
-    : Math.min(value, shuffledNames.length);
-
-  if (groupCount < 1) {
-    throw new Error('Unable to create groups from these settings.');
+  if (mode === 'groups') {
+    if (value > nameCount) {
+      throw new Error(`You cannot make ${value} non-empty groups from ${nameCount} people.`);
+    }
+    return value;
   }
 
+  if (mode === 'size') {
+    return Math.ceil(nameCount / value);
+  }
+
+  throw new Error('Choose a valid grouping mode.');
+}
+
+export function buildGroups(names, mode, value) {
+  const groupCount = getGroupCount(names.length, mode, value);
+  const shuffledNames = shuffle(names);
   const groups = Array.from({ length: groupCount }, () => []);
 
   shuffledNames.forEach((name, index) => {
@@ -63,24 +84,40 @@ export function buildGroups(names, mode, value) {
 
 export function assignTopics(groups, topics, allowReuse = false) {
   if (!topics.length) {
-    return groups.map((members) => ({ members, topic: '' }));
+    return groups.map((members) => ({ members: [...members], topic: '' }));
   }
 
-  if (!allowReuse && topics.length < groups.length) {
-    throw new Error('Add at least one topic per group, or allow topic reuse.');
-  }
-
-  if (allowReuse) {
-    return groups.map((members) => ({
-      members,
-      topic: topics[secureRandomInt(topics.length)]
+  if (topics.length >= groups.length) {
+    const shuffledTopics = shuffle(topics);
+    return groups.map((members, index) => ({
+      members: [...members],
+      topic: shuffledTopics[index]
     }));
   }
 
-  const shuffledTopics = shuffle(topics);
+  if (!allowReuse) {
+    throw new Error('Add at least one topic per group, or allow topic reuse.');
+  }
+
+  const assignedTopics = [];
+  while (assignedTopics.length < groups.length) {
+    assignedTopics.push(...shuffle(topics));
+  }
 
   return groups.map((members, index) => ({
-    members,
-    topic: shuffledTopics[index] || ''
+    members: [...members],
+    topic: assignedTopics[index]
   }));
+}
+
+export function summarizeGroups(groups) {
+  const people = groups.reduce((total, group) => total + group.members.length, 0);
+  const sizes = groups.map((group) => group.members.length);
+  const minSize = Math.min(...sizes);
+  const maxSize = Math.max(...sizes);
+  const sizeLabel = minSize === maxSize
+    ? `${minSize} per group`
+    : `${minSize}–${maxSize} per group`;
+
+  return `${people} ${people === 1 ? 'person' : 'people'} • ${groups.length} ${groups.length === 1 ? 'group' : 'groups'} • ${sizeLabel}`;
 }
