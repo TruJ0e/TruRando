@@ -72,7 +72,8 @@ TruRando/
 │   └── randomizer.js
 ├── scripts/
 │   ├── build-site.mjs
-│   └── privacy-audit.mjs
+│   ├── privacy-audit.mjs
+│   └── register-runner.ps1
 ├── tests/
 │   ├── ocr-parser.test.js
 │   └── randomizer.test.js
@@ -81,6 +82,16 @@ TruRando/
 ├── PRIVACY.md
 └── README.md
 ```
+
+## Self-hosted CI
+
+TruRando intentionally does not use GitHub-hosted runners. CI and Pages deployment target:
+
+```text
+[self-hosted, Windows, X64, trurando-windows]
+```
+
+On the authorized desktop, `scripts/register-runner.ps1` can register a repo-specific `TruJoe-TruRando` runner, apply the `trurando-windows` label, and create the `GitHubRunner-TruRando` logon task. The script obtains a short-lived registration token through the already-authenticated GitHub CLI; no runner token is committed to the repository.
 
 ## Deployment
 
