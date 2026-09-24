@@ -1,54 +1,89 @@
 # TruRando
 
-TruRando is a privacy-first random group and topic assignment tool.
+TruRando is a privacy-first random group and topic assignment tool from TruJoe Digital.
 
-## Core rule
+It is designed for classrooms, teams, meetings, practices, and other situations where someone needs to quickly split a list of people into random groups and optionally assign random topics.
 
-User-entered names, topics, and roster images must stay on the user's device.
+## Privacy rule
 
-TruRando is designed as a fully client-side static web app:
+Names, topics, roster pictures, extracted OCR text, and generated results stay on the user's device.
+
+The production app is a static site with:
 
 - no backend
 - no database
-- no user accounts
-- no AI/API calls with user data
+- no accounts
+- no AI/API calls with roster data
 - no analytics containing user input
 - no `localStorage`
 - no `sessionStorage`
-- no IndexedDB
-- no saving previous randomizations
-- no uploading roster images
-- local-only export generation
+- no IndexedDB use by TruRando
+- Tesseract OCR caching explicitly disabled (`cacheMethod: 'none'`)
+- no history of prior randomizations
+- no image upload endpoint
+- local clipboard/export generation
 
-Refreshing or closing the page clears the working data held in browser memory.
+Normal web-hosting requests still occur to load TruRando's own HTML, CSS, JavaScript, WebAssembly, and OCR language assets. User roster content is not included in those requests.
 
-## Planned workflow
+## Features
 
-1. Paste names or upload a roster image.
-2. Review/edit extracted names.
-3. Paste topics.
-4. Choose either number of groups or people per group.
-5. Randomize members.
-6. Randomly assign topics.
-7. Copy or export the results locally.
+- Paste names, one per line
+- Upload or drag/drop a roster picture
+- Local in-browser OCR with self-hosted Tesseract.js assets
+- Editable review of OCR results before randomizing
+- Group by number of groups or people per group
+- Balanced distribution of uneven group sizes
+- Optional random topic assignment
+- Optional topic reuse if there are fewer topics than groups
+- Secure random shuffling using `crypto.getRandomValues()`
+- Reroll all, members only, or topics only
+- Copy one group or all groups
+- Export TXT or CSV
+- Print-friendly results
+- Responsive mobile/desktop layout
+- Duplicate-name warning without automatically deleting legitimate same-name people
+
+## Development
+
+Requires Node.js 22 for the tested build workflow.
+
+```bash
+npm install --ignore-scripts
+npm test
+npm run privacy:audit
+npm run build
+```
+
+`npm run build` creates `dist/` and copies the required Tesseract.js browser bundle, worker, WebAssembly core files, and English trained-data file into the built static site. The deployed browser does not need a third-party OCR CDN.
 
 ## Project structure
 
 ```text
 TruRando/
-├── index.html
+├── .github/workflows/
+│   ├── ci.yml
+│   └── pages.yml
 ├── css/
 │   └── styles.css
 ├── js/
 │   ├── app.js
-│   ├── randomizer.js
+│   ├── export.js
 │   ├── ocr.js
-│   └── export.js
-├── assets/
-├── README.md
-└── PRIVACY.md
+│   └── randomizer.js
+├── scripts/
+│   ├── build-site.mjs
+│   └── privacy-audit.mjs
+├── tests/
+│   ├── ocr-parser.test.js
+│   └── randomizer.test.js
+├── index.html
+├── package.json
+├── PRIVACY.md
+└── README.md
 ```
 
-## Current status
+## Deployment
 
-Initial skeleton. Paste-based grouping is wired first. Image OCR is intentionally isolated behind `js/ocr.js` so it can later be implemented entirely in-browser without introducing a server dependency.
+The repository includes a GitHub Pages workflow that builds the private-source project and deploys only the generated static `dist/` artifact. GitHub Pages must be configured to use GitHub Actions in the repository settings before the first successful deployment.
+
+Planned custom domain: `trurando.trujoedigital.com`.
