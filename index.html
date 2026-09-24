@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="TruRando privately randomizes people into groups and assigns topics entirely in your browser.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+  <title>TruRando</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">TruJoe Digital</p>
+      <h1>TruRando</h1>
+      <p class="tagline">Private random groups and topic assignments. Everything stays on your device.</p>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <section class="panel" aria-labelledby="people-title">
+      <div class="section-heading">
+        <div>
+          <p class="step">Step 1</p>
+          <h2 id="people-title">Add people</h2>
+        </div>
+        <span id="nameCount" class="count-badge">0 names</span>
+      </div>
+
+      <div class="input-tabs" role="group" aria-label="Ways to add people">
+        <button class="tab-button active" type="button" data-tab="paste">Paste names</button>
+        <button class="tab-button" type="button" data-tab="image">Upload picture</button>
+      </div>
+
+      <div id="pastePanel" class="tab-panel">
+        <label for="names">One name per line</label>
+        <textarea id="names" rows="10" placeholder="Alex Smith&#10;Jordan Lee&#10;Taylor Brown"></textarea>
+      </div>
+
+      <div id="imagePanel" class="tab-panel" hidden>
+        <label class="upload-box" for="rosterImage">
+          <strong>Choose a roster image</strong>
+          <span>Image OCR will run locally in your browser.</span>
+          <input id="rosterImage" type="file" accept="image/*">
+        </label>
+        <p id="ocrStatus" class="status-text">Local OCR is scaffolded but not enabled yet.</p>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="settings-title">
+      <div class="section-heading">
+        <div>
+          <p class="step">Step 2</p>
+          <h2 id="settings-title">Set the groups</h2>
+        </div>
+      </div>
+
+      <fieldset class="choice-group">
+        <legend>Group by</legend>
+        <label>
+          <input type="radio" name="groupMode" value="groups" checked>
+          Number of groups
+        </label>
+        <label>
+          <input type="radio" name="groupMode" value="size">
+          People per group
+        </label>
+      </fieldset>
+
+      <label for="groupValue" id="groupValueLabel">Number of groups</label>
+      <input id="groupValue" class="number-input" type="number" min="1" step="1" value="4" inputmode="numeric">
+
+      <label for="topics">Topics, one per line</label>
+      <textarea id="topics" rows="7" placeholder="Leadership&#10;Motivation&#10;Communication&#10;Ethics"></textarea>
+
+      <label class="checkbox-row">
+        <input id="allowTopicReuse" type="checkbox">
+        Allow topic reuse when there are fewer topics than groups
+      </label>
+
+      <button id="randomizeButton" class="primary-button" type="button">Randomize</button>
+      <p id="errorMessage" class="error-message" role="alert" hidden></p>
+    </section>
+
+    <section id="resultsSection" class="panel results-panel" aria-labelledby="results-title" hidden>
+      <div class="section-heading results-heading">
+        <div>
+          <p class="step">Step 3</p>
+          <h2 id="results-title">Results</h2>
+        </div>
+        <div class="button-row">
+          <button id="copyButton" class="secondary-button" type="button">Copy all</button>
+          <button id="exportTextButton" class="secondary-button" type="button">Export TXT</button>
+          <button id="exportCsvButton" class="secondary-button" type="button">Export CSV</button>
+          <button id="resetButton" class="ghost-button" type="button">Reset</button>
+        </div>
+      </div>
+      <div id="results" class="results-grid"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p><strong>Private by design.</strong> Names, topics, images, and results are processed locally and are not saved or sent to AI.</p>
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
