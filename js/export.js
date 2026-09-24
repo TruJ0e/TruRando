@@ -1,13 +1,13 @@
-export function groupsToText(groups) {
-  return groups
-    .map((group, index) => {
-      const heading = group.topic
-        ? `Group ${index + 1} — ${group.topic}`
-        : `Group ${index + 1}`;
+export function groupToText(group, index) {
+  const heading = group.topic
+    ? `Group ${index + 1} — ${group.topic}`
+    : `Group ${index + 1}`;
 
-      return [heading, ...group.members].join('\n');
-    })
-    .join('\n\n');
+  return [heading, ...group.members].join('\n');
+}
+
+export function groupsToText(groups) {
+  return groups.map(groupToText).join('\n\n');
 }
 
 export function groupsToCsv(groups) {
@@ -24,7 +24,22 @@ export function groupsToCsv(groups) {
 }
 
 export async function copyText(text) {
-  await navigator.clipboard.writeText(text);
+  if (navigator.clipboard?.writeText && window.isSecureContext) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.setAttribute('readonly', '');
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  document.body.appendChild(textarea);
+  textarea.select();
+  const copied = document.execCommand('copy');
+  textarea.remove();
+
+  if (!copied) throw new Error('Copy failed.');
 }
 
 export function downloadText(filename, contents, mimeType = 'text/plain;charset=utf-8') {
@@ -37,5 +52,6 @@ export function downloadText(filename, contents, mimeType = 'text/plain;charset=
   document.body.appendChild(link);
   link.click();
   link.remove();
-  URL.revokeObjectURL(url);
+
+  window.setTimeout(() => URL.revokeObjectURL(url), 0);
 }
