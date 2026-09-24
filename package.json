@@ -1,0 +1,17 @@
+{
+  "name": "trurando",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Privacy-first random group and topic assignment tool.",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "build": "node scripts/build-site.mjs",
+    "privacy:audit": "node scripts/privacy-audit.mjs"
+  },
+  "dependencies": {
+    "@tesseract.js-data/eng": "1.0.0",
+    "tesseract.js": "7.0.0",
+    "tesseract.js-core": "7.0.0"
+  }
+}
