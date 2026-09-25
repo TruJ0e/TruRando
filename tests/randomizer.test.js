@@ -32,6 +32,17 @@ test('parseTopics splits on periods like voice dictation', () => {
   assert.deepEqual(parseTopics('A, B\nC'), ['A', 'B', 'C']);
 });
 
+test('parseLines keeps abbreviations like St. intact', () => {
+  assert.deepEqual(parseLines('St. John. Mr. Smith. Dr. Jones'), ['St. John', 'Mr. Smith', 'Dr. Jones']);
+});
+
+test('parseLines strips numbered and bulleted list markers', () => {
+  assert.deepEqual(parseLines('1. John Jakob\n2. Alex Smith'), ['John Jakob', 'Alex Smith']);
+  assert.deepEqual(parseLines('• John\n• Alex'), ['John', 'Alex']);
+  assert.deepEqual(parseLines('- John, - Alex'), ['John', 'Alex']);
+  assert.deepEqual(parseLines('50 Cent. Alex Smith'), ['50 Cent', 'Alex Smith']);
+});
+
 test('findDuplicateEntries is case-insensitive without deleting names', () => {
   assert.deepEqual(findDuplicateEntries(['Alex', 'Sam', 'alex']), ['Alex']);
 });

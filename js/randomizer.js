@@ -27,11 +27,44 @@ export function shuffle(items) {
   return copy;
 }
 
+const ABBREVIATIONS = /^(mr|mrs|ms|dr|st|jr|sr|vs|etc|inc|ltd|co)$/i;
+const LEADING_MARKER = /^(\d+[.)\]]|[(]\d+[)]|[•\-\*–—>])\s*/;
+const MARKER_ONLY = /^(\d+[.)\]]?|[(]\d+[)]|[•\-\*–—>])$/;
+
+function splitOnPeriods(text) {
+  const out = [];
+  let current = '';
+  const tokens = text.split(/(\. +)/);
+  for (let i = 0; i < tokens.length; i += 2) {
+    const candidate = current + tokens[i];
+    const delim = tokens[i + 1] || '';
+    const lastWord = (candidate.match(/([A-Za-z]+)\s*$/) || [])[1] || '';
+    if (delim && ABBREVIATIONS.test(lastWord)) {
+      current = `${candidate}. `;
+    } else {
+      if (candidate) out.push(candidate);
+      current = '';
+    }
+  }
+  if (current) out.push(current);
+  return out;
+}
+
+function cleanEntry(value) {
+  const collapsed = value
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/\.*$/, '')
+    .trim();
+  if (!collapsed || MARKER_ONLY.test(collapsed)) return '';
+  return collapsed.replace(LEADING_MARKER, '').trim();
+}
+
 export function parseLines(text) {
   return text
-    .split(/[\r\n,;]+|\. +/)
-    .map((value) => value.trim().replace(/\.*$/, ''))
-    .map((value) => value.trim())
+    .split(/[\r\n,;]+/)
+    .flatMap(splitOnPeriods)
+    .map(cleanEntry)
     .filter(Boolean);
 }
 
