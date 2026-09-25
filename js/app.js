@@ -4,6 +4,7 @@ import {
   findDuplicateEntries,
   getGroupCount,
   parseLines,
+  parseTopics,
   summarizeGroups
 } from './randomizer.js';
 import { copyText, downloadText, groupToText, groupsToCsv, groupsToText } from './export.js';
@@ -49,7 +50,7 @@ function getGroupMode() {
 function readInputs() {
   return {
     names: parseLines(namesInput.value),
-    topics: parseLines(topicsInput.value),
+    topics: parseTopics(topicsInput.value),
     value: Number.parseInt(groupValue.value, 10),
     mode: getGroupMode(),
     allowReuse: allowTopicReuse.checked

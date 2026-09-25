@@ -5,13 +5,30 @@ import {
   buildGroups,
   findDuplicateEntries,
   getGroupCount,
-  parseLines
+  parseLines,
+  parseTopics
 } from '../js/randomizer.js';
 
 const names = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
 
 test('parseLines trims blank lines', () => {
   assert.deepEqual(parseLines(' Alice \n\nBob\r\n '), ['Alice', 'Bob']);
+});
+
+test('parseLines splits comma- and semicolon-separated names', () => {
+  assert.deepEqual(
+    parseLines('John Jakob, Alex Smith, September November'),
+    ['John Jakob', 'Alex Smith', 'September November']
+  );
+  assert.deepEqual(parseLines('A; B\nC,D'), ['A', 'B', 'C', 'D']);
+});
+
+test('parseTopics splits on periods like voice dictation', () => {
+  assert.deepEqual(
+    parseTopics('Leadership. Motivation. TED talks. Powerpuff Girls.'),
+    ['Leadership', 'Motivation', 'TED talks', 'Powerpuff Girls']
+  );
+  assert.deepEqual(parseTopics('A, B\nC'), ['A', 'B', 'C']);
 });
 
 test('findDuplicateEntries is case-insensitive without deleting names', () => {
