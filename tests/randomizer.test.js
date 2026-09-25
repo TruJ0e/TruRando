@@ -15,12 +15,13 @@ test('parseLines trims blank lines', () => {
   assert.deepEqual(parseLines(' Alice \n\nBob\r\n '), ['Alice', 'Bob']);
 });
 
-test('parseLines splits comma- and semicolon-separated names', () => {
+test('parseLines splits comma-, semicolon-, and period-separated names', () => {
   assert.deepEqual(
     parseLines('John Jakob, Alex Smith, September November'),
     ['John Jakob', 'Alex Smith', 'September November']
   );
   assert.deepEqual(parseLines('A; B\nC,D'), ['A', 'B', 'C', 'D']);
+  assert.deepEqual(parseLines('John Jakob. Alex Smith. Mia.'), ['John Jakob', 'Alex Smith', 'Mia']);
 });
 
 test('parseTopics splits on periods like voice dictation', () => {

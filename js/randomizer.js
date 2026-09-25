@@ -29,17 +29,14 @@ export function shuffle(items) {
 
 export function parseLines(text) {
   return text
-    .split(/[\r\n,;]+/)
+    .split(/[\r\n,;]+|\. +/)
+    .map((value) => value.trim().replace(/\.*$/, ''))
     .map((value) => value.trim())
     .filter(Boolean);
 }
 
 export function parseTopics(text) {
-  return text
-    .split(/[\r\n,;]+|\. +/)
-    .map((value) => value.trim().replace(/\.*$/, ''))
-    .map((value) => value.trim())
-    .filter(Boolean);
+  return parseLines(text);
 }
 
 export function findDuplicateEntries(items) {
