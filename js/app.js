@@ -22,6 +22,7 @@ const resultsSection = document.querySelector('#resultsSection');
 const resultsContainer = document.querySelector('#results');
 const resultsSummary = document.querySelector('#resultsSummary');
 const errorMessage = document.querySelector('#errorMessage');
+const shuffleShout = document.querySelector('#shuffleShout');
 const copyButton = document.querySelector('#copyButton');
 const rerollAllButton = document.querySelector('#rerollAllButton');
 const rerollMembersButton = document.querySelector('#rerollMembersButton');
@@ -198,6 +199,8 @@ function clearWorkingData() {
   resultsContainer.replaceChildren();
   resultsSection.hidden = true;
   resultsSummary.textContent = '';
+  shuffleShout.textContent = '';
+  shuffleShout.classList.remove('bounce');
   ocrStatus.textContent = 'Choose a clear photo of a roster. OCR runs only on this device.';
   ocrStatus.classList.remove('status-success');
   clearError();

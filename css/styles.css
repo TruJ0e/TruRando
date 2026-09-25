@@ -320,6 +320,8 @@ h2 {
 .results-panel::before {
   content: "🎲";
   font-size: 1.8rem;
+  left: 22px;
+  right: auto;
 }
 
 .section-heading,
