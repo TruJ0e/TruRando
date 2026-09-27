@@ -24,19 +24,44 @@ export function groupsToCsv(groups) {
 }
 
 export async function copyText(text) {
-  if (navigator.clipboard?.writeText && window.isSecureContext) {
-    await navigator.clipboard.writeText(text);
-    return;
+  // Modern async clipboard API first — but a rejection must fall through to
+  // the legacy path, not surface as an error (some browsers expose the API
+  // yet deny the write, e.g. permission policy or background tab).
+  try {
+    if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+  } catch {
+    // Fall through to the legacy path below.
   }
 
   const textarea = document.createElement('textarea');
   textarea.value = text;
   textarea.setAttribute('readonly', '');
+  // iOS Safari only honors execCommand('copy') on a focused, selectable
+  // element — opacity:0 with no focus silently fails there.
   textarea.style.position = 'fixed';
-  textarea.style.opacity = '0';
+  textarea.style.top = '0';
+  textarea.style.left = '0';
+  textarea.style.width = '2em';
+  textarea.style.height = '2em';
+  textarea.style.padding = '0';
+  textarea.style.border = 'none';
+  textarea.style.outline = 'none';
+  textarea.style.boxShadow = 'none';
+  textarea.style.background = 'transparent';
   document.body.appendChild(textarea);
+  textarea.focus();
   textarea.select();
-  const copied = document.execCommand('copy');
+  textarea.setSelectionRange(0, textarea.value.length);
+
+  let copied = false;
+  try {
+    copied = document.execCommand('copy');
+  } catch {
+    copied = false;
+  }
   textarea.remove();
 
   if (!copied) throw new Error('Copy failed.');
