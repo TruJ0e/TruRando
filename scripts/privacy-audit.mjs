@@ -1,15 +1,25 @@
 import { readFile } from 'node:fs/promises';
 
 const sourceFiles = ['index.html', 'js/app.js', 'js/randomizer.js', 'js/ocr.js', 'js/export.js'];
+// Privacy intent: no trackers, analytics, or data exfiltration. Truman's own
+// domain is allowlisted so the site can link out to his own properties
+// (footer brand link, ad-contact links) without tripping the gate.
+const allowedExternalDomains = ['https://trujoedigital.com'];
 const forbidden = [
   ['localStorage', /\blocalStorage\b/],
   ['sessionStorage', /\bsessionStorage\b/],
   ['IndexedDB direct use', /\bindexedDB\b/],
   ['XMLHttpRequest', /\bXMLHttpRequest\b/],
   ['WebSocket', /\bWebSocket\b/],
-  ['Beacon API', /\bsendBeacon\b/],
-  ['external URL', /https?:\/\//]
+  ['Beacon API', /\bsendBeacon\b/]
 ];
+
+function findUnapprovedUrls(text) {
+  const urls = [...text.matchAll(/https?:\/\/[^\s"'<>()`]+/g)].map((m) => m[0]);
+  return urls.filter(
+    (u) => !allowedExternalDomains.some((a) => u === a || u.startsWith(a + '/'))
+  );
+}
 
 let failed = false;
 
@@ -20,6 +30,11 @@ for (const file of sourceFiles) {
       console.error(`Privacy audit failed: ${label} found in ${file}`);
       failed = true;
     }
+  }
+  const bad = findUnapprovedUrls(text);
+  if (bad.length) {
+    console.error(`Privacy audit failed: unapproved external URL(s) in ${file}: ${bad.join(', ')}`);
+    failed = true;
   }
 }
 
