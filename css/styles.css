@@ -845,6 +845,75 @@ input[type="checkbox"] {
   color: var(--pink);
 }
 
+/* ---------- ad zone ---------- */
+
+.ad-zone {
+  width: min(1120px, calc(100% - 32px));
+  margin: 24px auto 0;
+  padding: 22px 20px 16px;
+  background: var(--card);
+  border: var(--border-w) dashed var(--ink-soft);
+  border-radius: var(--radius);
+}
+
+.ad-slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.ad-slot {
+  position: relative;
+  min-height: 110px;
+  padding: 28px 16px 16px;
+  background: var(--paper);
+  border: var(--border-w) solid var(--ink);
+  border-radius: 14px;
+  box-shadow: var(--hard-shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ad-label {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 3px 14px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.ad-placeholder {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.ad-explainer {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.ad-explainer p {
+  margin: 8px 0;
+}
+
+.ad-disclaimer {
+  font-size: 0.78rem;
+}
+
 /* ---------- confetti canvas ---------- */
 
 #confettiCanvas {
@@ -920,6 +989,7 @@ input[type="checkbox"] {
   .site-header,
   .app-shell > .panel:not(.results-panel),
   .site-footer,
+  .ad-zone,
   .results-actions,
   .mini-button,
   .step {
