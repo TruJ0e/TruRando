@@ -76,3 +76,44 @@ test('topic reuse fills all groups only when enabled', () => {
   assert.equal(results.length, 4);
   assert.ok(results.every((result) => ['T1', 'T2'].includes(result.topic)));
 });
+
+test('parseLines drops worksheet chrome from a full pasted practice sheet', () => {
+  const worksheet = [
+    'MY CLASSRUM LIZT!',
+    'Room 1-B • Morning Circle Time Activity Sheet',
+    'Starr Count: ★★★★★',
+    '✎ Freinds Names (By Timmy)',
+    'tOmMy',
+    'eMMa',
+    'LILY G (the uther one)',
+    '☰ Toppiks to Tawk About',
+    '1. DiNosaUrs with sharp teeth',
+    '2. Snacks (speshuly golfeesh crackrs)',
+    '👍 GREAT JOP! GOOD SHARING AND SPELING TODAY',
+    'Teacher Stamp: APPROVED ✅',
+    'Early Learning Center • Practice Sheet',
+    'Page 1 of 1'
+  ].join('\n');
+
+  assert.deepEqual(parseLines(worksheet), [
+    'tOmMy',
+    'eMMa',
+    'LILY G (the uther one)',
+    'DiNosaUrs with sharp teeth',
+    'Snacks (speshuly golfeesh crackrs)'
+  ]);
+});
+
+test('parseTopics drops praise stamps, approval stamps, and page footers', () => {
+  assert.deepEqual(
+    parseTopics('5. Big yellow fire trukks\n6. Nap time (i am not tired tho)\n👏 GREAT JOB! GOOD SHARING AND SPELING TODAY\nTeacher Stamp: APPROVED ✅\nPage 1 of 1'),
+    ['Big yellow fire trukks', 'Nap time (i am not tired tho)']
+  );
+});
+
+test('parseLines keeps misspelled entries and parenthetical disambiguators', () => {
+  assert.deepEqual(
+    parseLines('Toppiks to Tawk About\nLILY G (the uther one)\nmEe (TiMMy)\nWhy do worms wikkle?'),
+    ['Toppiks to Tawk About', 'LILY G (the uther one)', 'mEe (TiMMy)', 'Why do worms wikkle?']
+  );
+});
