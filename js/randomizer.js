@@ -31,6 +31,33 @@ const ABBREVIATIONS = /^(mr|mrs|ms|dr|st|jr|sr|vs|etc|inc|ltd|co)$/i;
 const LEADING_MARKER = /^(\d+[.)\]]|[(]\d+[)]|[•\-\*–—>])\s*/;
 const MARKER_ONLY = /^(\d+[.)\]]?|[(]\d+[)]|[•\-\*–—>])$/;
 
+// Worksheet chrome that leaks in when teachers paste straight from a
+// practice sheet: titles, section headers, praise stamps, approval stamps,
+// headers, footers, and page markers. Real entries (even misspelled ones
+// like "Toppiks to Tawk About") never match these, so they survive.
+const JUNK_LINE_PATTERNS = [
+  /^\s*page\s+\d+(\s*of\s+\d+)?\s*$/i, // Page 1 of 1
+  /teacher'?s?\s+stamp/i, // Teacher Stamp: ...
+  /stamp\s*:\s*approved/i, // Stamp: APPROVED
+  /approved\s*[✅✔✓☑]/i, // APPROVED ✅
+  /\bactivity\s+sheet\b/i, // ... Activity Sheet
+  /\bpractice\s+sheet\b/i, // ... Practice Sheet
+  /\banswer\s+key\b/i,
+  /\bsta?rr?\s+count\s*:/i, // Starr Count: ★★★★★
+  /\bgreat\s+jo[bp]\b/i, // GREAT JOB! / GREAT JOP!
+  /\bgood\s+sharing\b/i, // GOOD SHARING ...
+  /^\s*[✎☰]/, // ✎ Freinds Names ... / ☰ Toppiks to Tawk About
+  /©|copyright/i,
+  /^(name|date)\s*[:_]/i, // Name: ___ / Date: ___
+  /^[A-Z0-9\s'’&!?.*\-]*[A-Z][A-Z0-9\s'’&!?.*\-]*!$/, // ALL-CAPS titles ending in !
+];
+const NO_ALNUM = /^[^A-Za-z0-9]*$/; // only emoji / symbols / punctuation
+
+function isJunkLine(value) {
+  if (NO_ALNUM.test(value)) return true;
+  return JUNK_LINE_PATTERNS.some((pattern) => pattern.test(value));
+}
+
 function splitOnPeriods(text) {
   const out = [];
   let current = '';
@@ -56,8 +83,10 @@ function cleanEntry(value) {
     .trim()
     .replace(/\.*$/, '')
     .trim();
-  if (!collapsed || MARKER_ONLY.test(collapsed)) return '';
-  return collapsed.replace(LEADING_MARKER, '').trim();
+  if (!collapsed || MARKER_ONLY.test(collapsed) || isJunkLine(collapsed)) return '';
+  const stripped = collapsed.replace(LEADING_MARKER, '').trim();
+  if (!stripped || MARKER_ONLY.test(stripped) || isJunkLine(stripped)) return '';
+  return stripped;
 }
 
 export function parseLines(text) {
