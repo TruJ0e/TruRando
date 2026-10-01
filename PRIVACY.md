@@ -38,6 +38,10 @@ After OCR completes, the worker is terminated and the temporary image canvas is 
 
 The application Content Security Policy restricts `connect-src` to the same origin. Application source code does not include third-party runtime URLs.
 
+## Advertising
+
+The bottom ad zone shows TruJoe Digital's own static promotions (house ads). They are plain HTML and CSS: no ad-network scripts, no iframes, no tracking pixels, no third-party requests. Clicking an ad only navigates to the linked TruJoe Digital property. No roster data is shared with advertisers — there are no third-party advertisers, and none of the page's user data leaves the browser regardless.
+
 Static hosting still receives ordinary requests required to deliver TruRando's own HTML, CSS, JavaScript, WebAssembly, and OCR language assets. Those requests must not contain roster content.
 
 ## Randomization

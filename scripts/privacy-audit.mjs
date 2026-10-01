@@ -2,9 +2,9 @@ import { readFile } from 'node:fs/promises';
 
 const sourceFiles = ['index.html', 'js/app.js', 'js/randomizer.js', 'js/ocr.js', 'js/export.js'];
 // Privacy intent: no trackers, analytics, or data exfiltration. Truman's own
-// domain is allowlisted so the site can link out to his own properties
-// (footer brand link, ad-contact links) without tripping the gate.
-const allowedExternalDomains = ['https://trujoedigital.com'];
+// domains are allowlisted so the site can link out to his own properties
+// (footer brand link, ad-contact links, house-ad creatives) without tripping the gate.
+const allowedExternalDomains = ['https://trujoedigital.com', 'https://trss.trujoedigital.com'];
 const forbidden = [
   ['localStorage', /\blocalStorage\b/],
   ['sessionStorage', /\bsessionStorage\b/],

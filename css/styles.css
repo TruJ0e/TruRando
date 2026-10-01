@@ -898,6 +898,60 @@ input[type="checkbox"] {
   font-size: 0.95rem;
 }
 
+.house-ad {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  color: inherit;
+  text-align: left;
+}
+
+.house-ad-eyebrow {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+}
+
+.house-ad-headline {
+  display: block;
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 6px;
+}
+
+.house-ad-copy {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  line-height: 1.45;
+  margin-bottom: 12px;
+}
+
+.house-ad-cta {
+  display: inline-block;
+  padding: 7px 16px;
+  background: var(--ink);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.house-ad:hover .house-ad-cta,
+.house-ad:focus-visible .house-ad-cta {
+  background: #ff3d7f;
+}
+
+.house-ad:focus-visible {
+  outline: 3px solid #ff3d7f;
+  outline-offset: 4px;
+  border-radius: 14px;
+}
+
 .ad-explainer {
   max-width: 720px;
   margin: 0 auto;
