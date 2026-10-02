@@ -42,6 +42,10 @@ The application Content Security Policy restricts `connect-src` to the same orig
 
 The bottom ad zone shows TruJoe Digital's own static promotions (house ads). They are plain HTML and CSS: no ad-network scripts, no iframes, no tracking pixels, no third-party requests. Clicking an ad only navigates to the linked TruJoe Digital property. No roster data is shared with advertisers — there are no third-party advertisers, and none of the page's user data leaves the browser regardless.
 
+### Future third-party ads (AdSense)
+
+If a third-party ad network (e.g. Google AdSense) is added later, this page will be updated *before* it goes live to disclose: the network's name, that its scripts and cookies may collect data under its own privacy policy, and exactly what changed (CSP allowlist, audit allowlist, `ads.txt`). The on-page disclaimer will keep labeling every ad box, and the house ads stay until the third-party option is approved and live.
+
 Static hosting still receives ordinary requests required to deliver TruRando's own HTML, CSS, JavaScript, WebAssembly, and OCR language assets. Those requests must not contain roster content.
 
 ## Randomization

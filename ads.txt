@@ -1,0 +1,5 @@
+# ads.txt — TEMPLATE
+# Replace pub-0000000000000000 with the real AdSense publisher ID after the
+# AdSense account is approved. Do NOT invent or guess a publisher ID.
+# Spec: https://support.google.com/adsense/answer/1217164
+google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
