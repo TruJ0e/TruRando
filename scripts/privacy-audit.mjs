@@ -2,11 +2,11 @@ import { readFile } from 'node:fs/promises';
 
 const sourceFiles = ['index.html', 'js/app.js', 'js/randomizer.js', 'js/ocr.js', 'js/export.js'];
 // Privacy intent: no trackers, analytics, or data exfiltration. Truman's own
-// domain is allowlisted so the site can link out to his own properties
-// (footer brand link, ad-contact links) without tripping the gate.
+// domains are allowlisted so the site can link out to his own properties
+// (footer brand link, ad-contact links, house-ad creatives) without tripping the gate.
 // https://schema.org is allowlisted as the JSON-LD @context vocabulary
 // identifier — it is never fetched by the browser, only read by crawlers.
-const allowedExternalDomains = ['https://trujoedigital.com', 'https://schema.org'];
+const allowedExternalDomains = ['https://trujoedigital.com', 'https://trss.trujoedigital.com', 'https://schema.org'];
 const forbidden = [
   ['localStorage', /\blocalStorage\b/],
   ['sessionStorage', /\bsessionStorage\b/],
