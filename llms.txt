@@ -1,0 +1,47 @@
+# TruRando — llms.txt
+# Free random group and team generator for teachers and coaches.
+# https://trurando.trujoedigital.com/
+
+## What TruRando is
+
+TruRando is a free, privacy-first web tool that randomly assigns people into
+groups and deals out topics. Teachers use it to split a class roster into
+random groups; coaches use it to draft fair teams. There is no account, no
+login, no analytics, and no server: the entire app runs in the visitor's
+browser, so a class roster or team list never leaves the device it was pasted
+into.
+
+## Key features
+
+- Paste a list of names (one per line); the app cleans up pasted "worksheet
+  chrome" automatically — numbered lists, titles, timestamps, headers,
+  footers, and page markers are stripped so only real names remain.
+- Choose group size or number of groups; TruRando deals names out randomly.
+- Reroll / reshuffle as many times as needed.
+- Topic assignment mode: randomly deal discussion topics or tasks to groups.
+- OCR import: snap a photo of a printed roster and extract the names.
+- Export results (copy or download).
+- Junk-line filter keeps misspelled real names while dropping non-name lines.
+- Confetti celebration on reveal (optional, dismissible).
+- Works offline-capable once loaded; no data ever transmitted.
+
+## Privacy
+
+- No accounts, no logins, no cookies for tracking, no analytics beacons.
+- No localStorage, sessionStorage, or IndexedDB use for roster data.
+- Content-Security-Policy: default-src 'self'; all scripts self-hosted.
+- See PRIVACY.md for the full privacy statement.
+
+## Who it is for
+
+- Teachers splitting classes into random groups or assigning topics.
+- Coaches drafting fair, randomized teams.
+- Workshop facilitators and organizers forming breakout groups.
+
+## Cost
+
+- Free. No premium tier, no paywall, no ads inside the randomizer.
+
+## Maker
+
+- Built by TruJoe Digital (https://trujoedigital.com), Clarksville, Arkansas.

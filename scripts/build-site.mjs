@@ -10,7 +10,7 @@ const langTarget = join(vendor, 'lang');
 await rm(dist, { recursive: true, force: true });
 await mkdir(dist, { recursive: true });
 
-for (const path of ['index.html', 'ads.txt', 'css', 'js', 'PRIVACY.md']) {
+for (const path of ['index.html', 'ads.txt', 'robots.txt', 'llms.txt', 'sitemap.xml', 'css', 'js', 'PRIVACY.md']) {
   await cp(join(root, path), join(dist, path), { recursive: true });
 }
 
