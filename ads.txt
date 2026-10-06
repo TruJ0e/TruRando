@@ -1,5 +1,5 @@
-# ads.txt — TEMPLATE
-# Replace pub-0000000000000000 with the real AdSense publisher ID after the
-# AdSense account is approved. Do NOT invent or guess a publisher ID.
+# ads.txt — TruJoe Digital / TruRando
+# Publisher ID confirmed via AdSense "submitted for review" email, 2026-10-05.
+# Account is UNDER REVIEW (can take up to four weeks) — ads will not serve until approved.
 # Spec: https://support.google.com/adsense/answer/1217164
-google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
+google.com, pub-1942036847459762, DIRECT, f08c47fec0942fa0

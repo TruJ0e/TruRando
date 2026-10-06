@@ -42,12 +42,11 @@ test('house ads open safely in a new tab', () => {
   }
 });
 
-test('ads.txt template exists with placeholder publisher ID only', async () => {
+test('ads.txt carries the real publisher ID', async () => {
   const ads = await readFile(new URL('../ads.txt', import.meta.url), 'utf8');
   assert.ok(
-    ads.includes('google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0'),
-    'ads.txt has the template DIRECT line'
+    ads.includes('google.com, pub-1942036847459762, DIRECT, f08c47fec0942fa0'),
+    'ads.txt has the real DIRECT line'
   );
-  const withoutPlaceholder = ads.replaceAll('pub-0000000000000000', '');
-  assert.ok(!/pub-\d+/.test(withoutPlaceholder), 'no real publisher ID in template');
+  assert.ok(!ads.includes('pub-0000000000000000'), 'placeholder publisher ID is gone');
 });
